@@ -1,0 +1,5 @@
+---
+- name: Building Aggregation devices configuration
+  template: >
+    src=main.conf.j2
+    dest={{ build_dir }}/main.conf.part
