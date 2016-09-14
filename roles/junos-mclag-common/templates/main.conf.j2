@@ -35,21 +35,8 @@ vlans {
     }
 }
 {# ICCP Protocol Configuration #}
-protocols {
-    iccp {
-        local-ip-addr {{ mclag.iccp.local_ip }};
-        peer {{ mclag.iccp.peer_ip }} {
-            redundancy-group-id-list 1;
-            session-establishment-hold-time 50;
-            liveness-detection {
-                minimum-receive-interval 1000;
-                transmit-interval {
-                    minimum-interval 1000;
-                }
-            }
-        }
-    }
-}
+
+
 switch-options {
     service-id 10;
 }

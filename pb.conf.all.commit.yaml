@@ -1,0 +1,23 @@
+---
+# This playbook will generate and apply configuration to all of the devices
+
+- include: pb.conf.all.yaml
+- name: Apply configuration
+  hosts: all
+  connection: local
+  gather_facts: no
+  vars:
+    credential:
+      host: "{{ junos_host }}"
+      port: "{{ netconf_port }}"
+      username: "{{ ansible_ssh_user }}"
+      password: "{{ ansible_ssh_pass }}"
+
+  tasks:
+    - name: Pushing config ... please wait
+      junos_template:
+        src: "{{ junos_conf }}"
+        action: overwrite
+        comment: "Applied by Ansible"
+        provider: "{{ credential }}"
+      register: result

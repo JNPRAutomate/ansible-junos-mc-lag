@@ -1,0 +1,12 @@
+---
+- name: Generate all Vlans information
+  hosts: all
+  connection: local
+  gather_facts: no
+  vars:
+    vlans_start: 100
+    vlans_end: 102
+    ntwk_start: 10.0.0.0/16
+    ntwk_size: 24
+  roles:
+    - generate_vlans

@@ -87,7 +87,7 @@ interfaces {
 {% endfor %}
 }
  {# Configure All MC-LAG interface in RSTP Edge mode #}
-{#
+
 protocols {
     rstp {
         {% for access_group in mclag.links.to_access %}
@@ -96,7 +96,31 @@ protocols {
         }
         {% endfor %}
     }
-} #}
+    iccp {
+        local-ip-addr {{ mclag.iccp.local_ip }};
+        peer {{ mclag.iccp.peer_ip }} {
+            redundancy-group-id-list 1;
+            session-establishment-hold-time 50;
+            liveness-detection {
+                minimum-receive-interval 1000;
+                transmit-interval {
+                    minimum-interval 1000;
+                }
+            }
+        }
+    }
+    pim {
+      rp {
+          local {
+              address {{ loopback_ip }};
+          }
+      }
+      interface all;
+    }
+    igmp-snooping {
+      vlan all;
+    }
+}
 
 chassis {
     aggregated-devices {

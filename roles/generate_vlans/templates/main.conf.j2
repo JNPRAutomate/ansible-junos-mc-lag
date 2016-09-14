@@ -1,0 +1,11 @@
+
+vlans:
+{% for i in range(vlans_start, vlans_end ) %}
+-   id: {{ i }}
+    name: V{{ i }}
+{% if dev_id is defined %}
+    ip: {{ ntwk_start | ipsubnet(ntwk_size, i) | ipaddr(dev_id) | ipaddr('address') }}
+    mask: {{ ntwk_size }}
+    vip: {{ ntwk_start | ipsubnet(ntwk_size, i) | ipaddr(1) | ipaddr('address') }}
+{% endif %}
+{% endfor %}

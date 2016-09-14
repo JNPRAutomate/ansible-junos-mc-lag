@@ -1,0 +1,12 @@
+---
+- name: Create configuration for Aggregation devices
+  hosts: aggregation
+  connection: local
+  gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
+  roles:
+    - junos-system
+    - junos-mclag-common
+    - junos-mclag-aggregation
+    - build-config

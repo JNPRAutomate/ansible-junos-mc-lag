@@ -1,0 +1,6 @@
+mclag_shared:
+    iccp:
+        vlan_id: 1
+        vlan_name: ICCP_VLAN
+    mac: 00:11:22:33:33:00
+    mode: active-active

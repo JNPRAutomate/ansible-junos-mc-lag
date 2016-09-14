@@ -1,0 +1,23 @@
+mclag:
+    chassis_id: 0
+    iccp:
+        local_ip: 1.1.1.1
+        peer_ip: 1.1.1.2
+    icl_interface: ae0
+    links:
+        to_peer:
+        - "{{ topo[inventory_hostname].port1.name }}"
+        - "{{ topo[inventory_hostname].port2.name }}"
+        to_access:
+        -   description: to_access01
+            key: 1
+            links:
+            - "{{ topo[inventory_hostname].port3.name }}"
+            - "{{ topo[inventory_hostname].port4.name }}"
+        -   description: to_access02
+            key: 2
+            links:
+            - "{{ topo[inventory_hostname].port5.name }}"
+            - "{{ topo[inventory_hostname].port6.name }}"
+    nbr_ae: 5
+    status_control: active

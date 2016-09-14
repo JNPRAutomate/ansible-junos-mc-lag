@@ -1,0 +1,27 @@
+# This task gets all Junos configuration from all devices
+- name: Get configuration
+  hosts: all
+  connection: local
+  gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
+  vars:
+    credential:
+      host: "{{ junos_host }}"
+      port: "{{ netconf_port }}"
+      username: "{{ ansible_ssh_user }}"
+      password: "{{ ansible_ssh_pass }}"
+  tasks:
+    - name: Check if directory config_save/ is present
+      file: path=config_save/ state=directory
+      run_once: true
+
+    - name: Collect facts and configuration in text on device
+      junos_facts:
+        config: yes
+        config_format: text
+        provider: "{{ credential }}"
+      register: result
+
+    - name: Save configuration to file in local directory
+      copy: content="{{ result.ansible_facts.config }}" dest=./config_save/{{ inventory_hostname }}.save.conf
