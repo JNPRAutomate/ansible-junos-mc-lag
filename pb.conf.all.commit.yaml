@@ -3,7 +3,7 @@
 
 - include: pb.conf.all.yaml
 - name: Apply configuration
-  hosts: junos
+  hosts: spine,leaf
   connection: local
   gather_facts: no
   pre_tasks:
