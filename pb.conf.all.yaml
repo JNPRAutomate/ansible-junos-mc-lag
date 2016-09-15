@@ -1,5 +1,27 @@
 ---
 
 - include: pb.init.make_clean.yaml
-- include: pb.conf.spine.yaml
-- include: pb.conf.leaf.yaml
+
+- name: Create configuration for Spine/Aggregation devices
+  hosts: spine
+  connection: local
+  gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
+  roles:
+    - junos-system
+    - junos-mclag-icl
+    - junos-mclag-qfx10k
+    - build-config
+
+- name: Create configuration for Leaf/Access Devices
+  hosts: leaf
+  connection: local
+  gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
+  roles:
+    - junos-system
+    - junos-mclag-icl
+    - junos-mclag-qfx10k
+    - build-config

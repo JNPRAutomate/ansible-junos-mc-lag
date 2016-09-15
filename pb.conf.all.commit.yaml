@@ -3,13 +3,15 @@
 
 - include: pb.conf.all.yaml
 - name: Apply configuration
-  hosts: all
+  hosts: junos
   connection: local
   gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
   vars:
     credential:
       host: "{{ junos_host }}"
-      port: "{{ netconf_port }}"
+      port: "{{ ansible_ssh_port }}"
       username: "{{ ansible_ssh_user }}"
       password: "{{ ansible_ssh_pass }}"
 

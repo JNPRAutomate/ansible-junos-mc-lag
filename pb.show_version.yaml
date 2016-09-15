@@ -1,0 +1,23 @@
+
+---
+- name: Gather user information
+  hosts: junos
+  connection: local
+  gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
+  vars:
+    credential:
+      host: "{{ junos_host }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ ansible_ssh_user }}"
+      password: "{{ ansible_ssh_pass }}"
+  tasks:
+  - name: Gather user information
+    junos_command:
+      commands:
+        - show system users
+      provider: "{{ credential }}"
+    register: result
+
+  - debug: var=result.stdout
