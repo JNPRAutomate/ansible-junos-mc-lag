@@ -1,0 +1,83 @@
+
+
+
+mgmt_port: em0
+junos_host: 127.0.0.1
+ansible_ssh_pass: Juniper
+ansible_ssh_user: root
+vqfx: true
+vagrant: true
+loopback_subnet: 100.0.0.0/24
+loopback_ip: "{{ loopback_subnet | ipaddr(id) | ipaddr('address') }}"
+
+# Global Variables used to generate the common part of the configuration
+# these variables are mainly used in the template roles/common/templates/main.conf.j2
+# please update these variable and the template as needed to match your environment
+global:
+    root_hash: "$1$fv3Ke4LT$10nlsy3SEJy5ainm.kPTd."
+    login_message: This is the property of Example Corp. Do not login without express permission.
+    time_zone: America/Los_Angeles
+    name_servers:
+    - 8.8.8.8
+    - 8.8.4.4
+    ntp_servers:
+    - 129.250.35.250 # 0.pool.ntp.org
+
+####################################
+###   Physical interfaces name   ###
+####################################
+topo:
+    spine-01:
+        port1: { name: xe-0/0/0,    peer: spine-02,       pport: port1 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port2 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-01,        pport: port1 }
+        port4: { name: xe-0/0/3,    peer: leaf-02,        pport: port1 }
+        port5: { name: xe-0/0/4,    peer: leaf-03,        pport: port1 }
+        port6: { name: xe-0/0/5,    peer: leaf-04,        pport: port1 }
+
+    spine-02:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port1 }
+        port2: { name: xe-0/0/1,    peer: spine-01,       pport: port2 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-01,        pport: port2 }
+        port4: { name: xe-0/0/3,    peer: leaf-02,        pport: port2 }
+
+        port5: { name: xe-0/0/4,    peer: leaf-03,        pport: port2 }
+        port6: { name: xe-0/0/5,    peer: leaf-04,        pport: port2 }
+
+    leaf-01:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port3 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port3 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-02,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-02,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-01,         pport: port1 }
+
+    leaf-02:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port4 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port4 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-01,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-01,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-01,         pport: port2 }
+
+    leaf-03:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port5 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port5 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-04,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-04,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-02,         pport: port1 }
+
+    leaf-04:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port6 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port6 }
+        
+        port3: { name: xe-0/0/2,    peer: leaf-03,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-03,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-02,         pport: port2 }
