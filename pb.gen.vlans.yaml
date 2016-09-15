@@ -1,6 +1,6 @@
 ---
 - name: Generate all Vlans information
-  hosts: all
+  hosts: spine,leaf
   connection: local
   gather_facts: no
   pre_tasks:

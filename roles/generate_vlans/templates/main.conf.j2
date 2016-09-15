@@ -1,7 +1,8 @@
 
 vlans:
 {% for i in range(vlans_start, vlans_end ) %}
--   id: {{ i }}
+  V{{ i }}:
+    id: {{ i }}
     name: V{{ i }}
 {% if mclag.has_l3 is defined %}
     ip: {{ ntwk_start | ipsubnet(ntwk_size, i) | ipaddr(id) | ipaddr('address') }}
