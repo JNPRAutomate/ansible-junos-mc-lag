@@ -1,0 +1,92 @@
+
+vlans:
+  V100:
+    id: 100
+    name: V100
+  V101:
+    id: 101
+    name: V101
+  V102:
+    id: 102
+    name: V102
+  V103:
+    id: 103
+    name: V103
+  V104:
+    id: 104
+    name: V104
+  V105:
+    id: 105
+    name: V105
+  V106:
+    id: 106
+    name: V106
+  V107:
+    id: 107
+    name: V107
+  V108:
+    id: 108
+    name: V108
+  V109:
+    id: 109
+    name: V109
+  V110:
+    id: 110
+    name: V110
+  V111:
+    id: 111
+    name: V111
+  V112:
+    id: 112
+    name: V112
+  V113:
+    id: 113
+    name: V113
+  V114:
+    id: 114
+    name: V114
+  V115:
+    id: 115
+    name: V115
+  V116:
+    id: 116
+    name: V116
+  V117:
+    id: 117
+    name: V117
+  V118:
+    id: 118
+    name: V118
+  V119:
+    id: 119
+    name: V119
+  V120:
+    id: 120
+    name: V120
+  V121:
+    id: 121
+    name: V121
+  V122:
+    id: 122
+    name: V122
+  V123:
+    id: 123
+    name: V123
+  V124:
+    id: 124
+    name: V124
+  V125:
+    id: 125
+    name: V125
+  V126:
+    id: 126
+    name: V126
+  V127:
+    id: 127
+    name: V127
+  V128:
+    id: 128
+    name: V128
+  V129:
+    id: 129
+    name: V129

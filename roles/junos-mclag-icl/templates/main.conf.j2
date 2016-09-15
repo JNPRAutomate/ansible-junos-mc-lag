@@ -6,9 +6,6 @@ interfaces {
         unit 0 {
             family ethernet-switching {
                 interface-mode trunk;
-                vlan {
-                    members {{ mclag_shared.iccp.vlan_id }};
-                }
             }
         }
     }
@@ -19,22 +16,23 @@ interfaces {
         }
     }
 {% endfor %}
-{# IRB interface used for ICCP communication #}
-
-    irb {
-        unit {{ mclag_shared.iccp.vlan_id }} {
+{# ICCP interface  #}
+    {{ mclag.iccp_interface }} {
+        unit 0 {
             family inet {
                 address {{ mclag.iccp.local_ip }}/24
             }
         }
     }
-}
-vlans {
-    {{ mclag_shared.iccp.vlan_name }} {
-        vlan-id {{ mclag_shared.iccp.vlan_id }};
-        l3-interface irb.{{ mclag_shared.iccp.vlan_id }};
+{% for link in mclag.links.iccp.links %}
+    {{ link }} {
+        ether-options {
+            802.3ad {{ mclag.iccp_interface }};
+        }
     }
+{% endfor %}
 }
+
 {# ICCP Protocol Configuration #}
 
 

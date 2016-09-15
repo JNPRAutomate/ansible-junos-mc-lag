@@ -7,7 +7,7 @@ interfaces {
             family ethernet-switching {
                 interface-mode trunk;
                 vlan {
-{% for vlan in vlans %}
+{% for vname, vlan in vlans.iteritems()  %}
                     members {{ vlan.id }};
 {% endfor %}
                 }
@@ -18,7 +18,7 @@ interfaces {
 {% if mclag.has_l3 %}
 {# Create IRB for All Vlans with IP address configured #}
     irb {
-{% for vlan in vlans %}
+{% for vname, vlan in vlans.iteritems() %}
 {% if vlan.ip is defined %}
         unit {{ vlan.id }} {
             family inet {
@@ -48,13 +48,13 @@ interfaces {
             lacp {
                 active;
                 periodic fast;
-                system-id {{ mclag_shared.mac }};
+                system-id {{ mclag.mac }};
                 admin-key {{ mcae_group.key }};
             }
             mc-ae {
                 mc-ae-id {{ mcae_group.key }};
                 chassis-id {{ mclag.chassis_id }};
-                mode {{ mclag_shared.mode }};
+                mode {{ mclag.mode }};
                 status-control {{ mclag.status_control }};
                 redundancy-group 1;
                 init-delay-time 60;
@@ -77,7 +77,7 @@ interfaces {
                     members {{ vlan }};
 {% endfor %}
 {% else %}
-{% for vlan in vlans %}
+{% for vname, vlan in vlans.iteritems()  %}
                     members {{ vlan.id }};
 {% endfor %}
 {% endif %}
@@ -139,7 +139,7 @@ chassis {
 
 {# Create Vlans and associate IRB to it if available #}
 vlans {
-{% for vlan in vlans %}
+{% for vname, vlan in vlans.iteritems()  %}
     {{ vlan.name }} {
         vlan-id {{ vlan.id }};
 {% if vlan.ip is defined %}

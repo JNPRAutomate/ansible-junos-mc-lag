@@ -2,18 +2,20 @@
 mclag:
   nbr_ae: 5
   links:
-    icl:
+    iccp:
       links:
         - "{{ topo[inventory_hostname].port1.name }}"
+    icl:
+      links:
         - "{{ topo[inventory_hostname].port2.name }}"
     mcae:
       to_access01:
-        key: 1
+        key: 2
         links:
           - "{{ topo[inventory_hostname].port3.name }}"
           - "{{ topo[inventory_hostname].port4.name }}"
       to_access02:
-        key: 2
+        key: 3
         links:
           - "{{ topo[inventory_hostname].port5.name }}"
           - "{{ topo[inventory_hostname].port6.name }}"

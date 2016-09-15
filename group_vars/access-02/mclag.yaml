@@ -1,22 +1,23 @@
 
-mclag_shared:
-    mac: 00:11:22:33:33:02
 
 mclag:
+  mac: 00:11:22:33:33:02
   links:
+    iccp:
+      links:
+        - "{{ topo[inventory_hostname].port1.name }}"
     icl:
       links:
-        - "{{ topo[inventory_hostname].port3.name }}"
-        - "{{ topo[inventory_hostname].port4.name }}"
+        - "{{ topo[inventory_hostname].port2.name }}"
     mcae:
       to_aggregation:
-        key: 1
+        key: 2
         links:
           - "{{ topo[inventory_hostname].port1.name }}"
           - "{{ topo[inventory_hostname].port2.name }}"
       server2:
         description: "{{ topo[inventory_hostname].port5.peer }}"
-        key: 2
+        key: 3
         vlans: ['100-199']
         links:
           - "{{ topo[inventory_hostname].port5.name }}"
