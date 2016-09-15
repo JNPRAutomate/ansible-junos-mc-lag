@@ -1,0 +1,39 @@
+
+- name: Checking Physical Layer status
+  hosts: [spine,leaf]
+  connection: local
+  gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
+  vars:
+    credential:
+      host: "{{ junos_host }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ ansible_ssh_user }}"
+      password: "{{ ansible_ssh_pass }}"
+  tasks:
+###########################################################################
+## Check if all physical interfaces that are part of the Underlay are UP
+###########################################################################
+    - name: "Check Physical Interface Status (core/junos_command)"
+      junos_command:
+        commands:
+          - "show interfaces terse {{ item.value.name }}"
+        provider: "{{ credential }}"
+        waitfor:
+          - "result[0]['interface-information']['physical-interface']['oper-status'] eq up"
+      with_dict: "{{ topo[inventory_hostname] }}"
+      register: ints
+
+##################################################################
+## Check all LLDP neighbors
+##################################################################
+    - name: "Check LLDP neighbors (core/junos_command)"
+      junos_command:
+        commands:
+          - "show lldp neighbors interface {{ item.value.name }}"
+        provider: "{{ credential }}"
+        waitfor:
+           - "result[0]['lldp-neighbors-information']['lldp-neighbor-information']['lldp-remote-system-name'] eq {{ item.value.peer }}"
+      with_dict: "{{ topo[inventory_hostname] }}"
+      register: lldp
