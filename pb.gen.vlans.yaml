@@ -3,9 +3,11 @@
   hosts: all
   connection: local
   gather_facts: no
+  pre_tasks:
+    - include_vars: "{{ topology_file }}"
   vars:
     vlans_start: 100
-    vlans_end: 102
+    vlans_end: 130
     ntwk_start: 10.0.0.0/16
     ntwk_size: 24
   roles:

@@ -3,4 +3,4 @@
 - name: Generate Vlans
   template: >
     src=main.conf.j2
-    dest=host_vars/{{inventory_hostname}}/vlans.yaml
+    dest=./host_vars/{{ inventory_hostname }}/generated_vlans.yaml
