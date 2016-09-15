@@ -12,27 +12,7 @@ Generate the configuration for the ICL/ICCP link.
 Default variables
 ^^^^^^^^^^^^^^^^^
 
-.. code-block:: yaml
-
-    mclag_shared:
-      iccp:
-        vlan_id: 10
-        vlan_name: ICCP_VLAN
-      mode: active-active
-
-    # Automatically calculate an ID (0 or 1) for each device based on the variable "ID"
-    mclag_id: "{{ id - ((id//2)*2) }}"
-
-    mclag:
-      icl_interface: ae0
-      chassis_id: "{{ mclag_id }}"
-      status_control: "{{ 'active' if mclag_id == '0' else 'standby' }}"
-      iccp:
-        local_ip: "{{ '1.1.1.2' if mclag_id == '0' else '1.1.1.1' }}"
-        peer_ip: "{{ '1.1.1.1' if mclag_id == '0' else '1.1.1.2' }}"
-      icl:
-        description: ICL interface
-
+.. include:: _includes/roles_junos_mclag_icl_defaults_main.yaml
 
 config template - junos-mclag-qfx10k
 -------------------------------------
@@ -41,6 +21,9 @@ Generate configuration for all MC-AE interfaces.
 
 Default variables
 ^^^^^^^^^^^^^^^^^
+
+.. include:: _includes/roles_junos_mclag_qfx10k_defaults_main.yaml
+
 
 config template - junos-mclag-qfx5k (deprecated for now)
 ---------------------------------------------------------

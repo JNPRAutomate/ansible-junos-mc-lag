@@ -18,7 +18,17 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('.'))
+import utility
+
+# --------- Copy files from to the project to the include dir -------------
+files_to_copy = [
+    { 'file': "roles/junos-mclag-icl/defaults/main.yaml", 'type': "yaml" },
+    { 'file': "roles/junos-mclag-qfx10k/defaults/main.yaml", 'type': "yaml" },
+]
+
+for item in files_to_copy:
+    utility.copy_and_format_file(item['file'], item['type'])
 
 # -- General configuration ------------------------------------------------
 
