@@ -1,0 +1,10 @@
+
+.. code-block:: yaml
+
+
+    mclag:
+      has_l3: false
+      iccp:
+        minimum_receive_interval: 1000
+        minimum_transmit_interval: 1000
+        session_hold_time: 50

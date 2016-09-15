@@ -1,0 +1,20 @@
+
+.. code-block:: yaml
+
+
+    
+    
+    # Automatically calculate an ID (0 or 1) for each device based on the variable "ID"
+    mclag_id: "{{ id - ((id//2)*2) }}"
+    
+    mclag:
+      mode: active-active
+      iccp_interface: ae1
+      icl_interface: ae0
+      chassis_id: "{{ mclag_id }}"
+      status_control: "{{ 'active' if mclag_id == '0' else 'standby' }}"
+      iccp:
+        local_ip: "{{ '1.1.1.2' if mclag_id == '0' else '1.1.1.1' }}"
+        peer_ip: "{{ '1.1.1.1' if mclag_id == '0' else '1.1.1.2' }}"
+      icl:
+        description: ICL interface
