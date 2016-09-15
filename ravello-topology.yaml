@@ -1,0 +1,161 @@
+
+
+vqfx: true
+
+ravello:
+  app_name: "MC-LAG Fabric 43234"
+
+# Global Variables used to generate the common part of the configuration
+# these variables are mainly used in the template roles/common/templates/main.conf.j2
+# please update these variable and the template as needed to match your environment
+global:
+    root_hash: "$1$fv3Ke4LT$10nlsy3SEJy5ainm.kPTd."
+    login_message: This is the property of Example Corp. Do not login without express permission.
+    time_zone: America/Los_Angeles
+    name_servers:
+    - 8.8.8.8
+    - 8.8.4.4
+    ntp_servers:
+    - 129.250.35.250 # 0.pool.ntp.org
+
+####################################
+###   Physical interfaces name   ###
+####################################
+topo:
+    spine-01:
+        port1: { name: xe-0/0/0,    peer: spine-02,       pport: port1 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port2 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-01,        pport: port1 }
+        port4: { name: xe-0/0/3,    peer: leaf-02,        pport: port1 }
+        port5: { name: xe-0/0/4,    peer: leaf-03,        pport: port1 }
+        port6: { name: xe-0/0/5,    peer: leaf-04,        pport: port1 }
+
+    spine-02:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port1 }
+        port2: { name: xe-0/0/1,    peer: spine-01,       pport: port2 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-01,        pport: port2 }
+        port4: { name: xe-0/0/3,    peer: leaf-02,        pport: port2 }
+
+        port5: { name: xe-0/0/4,    peer: leaf-03,        pport: port2 }
+        port6: { name: xe-0/0/5,    peer: leaf-04,        pport: port2 }
+
+    leaf-01:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port3 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port3 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-02,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-02,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-01,         pport: port1 }
+
+    leaf-02:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port4 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port4 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-01,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-01,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-01,         pport: port2 }
+
+    leaf-03:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port5 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port5 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-04,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-04,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-02,         pport: port1 }
+
+    leaf-04:
+        port1: { name: xe-0/0/0,    peer: spine-01,       pport: port6 }
+        port2: { name: xe-0/0/1,    peer: spine-02,       pport: port6 }
+
+        port3: { name: xe-0/0/2,    peer: leaf-03,        pport: port3 }
+        port4: { name: xe-0/0/3,    peer: leaf-03,        pport: port4 }
+
+        port5: { name: xe-0/0/4,    peer: srv-02,         pport: port2 }
+
+
+ravello_topology:
+  spine-01:
+    - link: dhcp-public
+    - link: 81
+    - null
+    - link: 1
+    - link: 2
+    - link: 3
+    - link: 4
+    - link: 5
+    - link: 6
+
+  spine-02:
+    - link: dhcp-public
+    - link: 82
+    - null
+    - link: 1
+    - link: 2
+    - link: 7
+    - link: 8
+    - link: 9
+    - link: 10
+
+  leaf-01:
+    - link: dhcp-public
+    - link: 83
+    - null
+    - link: 3
+    - link: 7
+    - link: 11
+    - link: 12
+    - link: 15
+
+  leaf-02:
+    - link: dhcp-public
+    - link: 84
+    - null
+    - link: 4
+    - link: 8
+    - link: 11
+    - link: 12
+    - link: 16
+
+  leaf-03:
+    - link: dhcp-public
+    - link: 85
+    - null
+    - link: 5
+    - link: 9
+    - link: 13
+    - link: 14
+    - link: 17
+
+  leaf-04:
+    - link: dhcp-public
+    - link: 86
+    - null
+    - link: 6
+    - link: 10
+    - link: 13
+    - link: 14
+    - link: 18
+
+  spine-01-pfe:
+    - link: dhcp-public
+    - link: 81
+  spine-02-pfe:
+    - link: dhcp-public
+    - link: 82
+  leaf-01-pfe:
+    - link: dhcp-public
+    - link: 83
+  leaf-02-pfe:
+    - link: dhcp-public
+    - link: 83
+  leaf-03-pfe:
+    - link: dhcp-public
+    - link: 85
+  leaf-04-pfe:
+    - link: dhcp-public
+    - link: 86
