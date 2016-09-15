@@ -2,7 +2,7 @@
 {# ICL Interface configuration #}
 interfaces {
     {{ mclag.icl_interface }} {
-        description "ICCP interface to Peer device";
+        description "{{ mclag.icl.description }}";
         unit 0 {
             family ethernet-switching {
                 interface-mode trunk;
@@ -12,16 +12,17 @@ interfaces {
             }
         }
     }
-{% for link in mclag.links.to_peer %}
+{% for link in mclag.links.icl.links %}
     {{ link }} {
         ether-options {
             802.3ad {{ mclag.icl_interface }};
         }
     }
 {% endfor %}
-    {# IRB interface used for ICCP communication #}
+{# IRB interface used for ICCP communication #}
+
     irb {
-        unit  {{ mclag_shared.iccp.vlan_id }} {
+        unit {{ mclag_shared.iccp.vlan_id }} {
             family inet {
                 address {{ mclag.iccp.local_ip }}/24
             }
@@ -30,7 +31,7 @@ interfaces {
 }
 vlans {
     {{ mclag_shared.iccp.vlan_name }} {
-        vlan-id {{ mclag_shared.iccp.vlan_id }}
+        vlan-id {{ mclag_shared.iccp.vlan_id }};
         l3-interface irb.{{ mclag_shared.iccp.vlan_id }};
     }
 }

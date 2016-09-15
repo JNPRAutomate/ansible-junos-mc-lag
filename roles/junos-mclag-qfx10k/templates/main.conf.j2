@@ -15,6 +15,7 @@ interfaces {
         }
     }
 
+{% if mclag.has_l3 %}
 {# Create IRB for All Vlans with IP address configured #}
     irb {
 {% for vlan in vlans %}
@@ -36,21 +37,22 @@ interfaces {
 {% endif %}
 {% endfor %}
     }
+{% endif %}
 
 {# Create AEs interface with all vlans configured #}
 {# and Associate physical interfaces with all AEs #}
 {# AEs names start at AE1 and increment #}
-{% for access_group in mclag.links.to_access %}
-    ae{{ access_group.key }} {
+{% for name, mcae_group in mclag.links.mcae.iteritems() %}
+    ae{{ mcae_group.key }} {
         aggregated-ether-options {
             lacp {
                 active;
                 periodic fast;
                 system-id {{ mclag_shared.mac }};
-                admin-key {{ access_group.key }};
+                admin-key {{ mcae_group.key }};
             }
             mc-ae {
-                mc-ae-id {{ access_group.key }};
+                mc-ae-id {{ mcae_group.key }};
                 chassis-id {{ mclag.chassis_id }};
                 mode {{ mclag_shared.mode }};
                 status-control {{ mclag.status_control }};
@@ -65,46 +67,51 @@ interfaces {
 {% endif %}
             }
         }
-        description "{{ access_group.description }}";
+        description "{{ mcae_group.description | default(name) }}";
         unit 0 {
             family ethernet-switching {
                 interface-mode trunk;
                 vlan {
+{% if mcae_group.vlans is defined %}
+{% for vlan in mcae_group.vlans %}
+                    members {{ vlan }};
+{% endfor %}
+{% else %}
 {% for vlan in vlans %}
                     members {{ vlan.id }};
 {% endfor %}
+{% endif %}
                 }
             }
         }
     }
-{% for link in access_group.links %}
+{% for link in mcae_group.links %}
     {{ link }} {
         ether-options {
-            802.3ad ae{{ access_group.key }};
+            802.3ad ae{{ mcae_group.key }};
         }
     }
 {% endfor %}
 {% endfor %}
 }
  {# Configure All MC-LAG interface in RSTP Edge mode #}
-
 protocols {
     rstp {
-        {% for access_group in mclag.links.to_access %}
-        interface ae{{ access_group.key }} {
+{% for name, mcae_group in mclag.links.mcae.iteritems() %}
+        interface ae{{ mcae_group.key }} {
             edge;
         }
-        {% endfor %}
+{% endfor %}
     }
     iccp {
         local-ip-addr {{ mclag.iccp.local_ip }};
         peer {{ mclag.iccp.peer_ip }} {
             redundancy-group-id-list 1;
-            session-establishment-hold-time 50;
+            session-establishment-hold-time {{ mclag.iccp.session_hold_time }};
             liveness-detection {
-                minimum-receive-interval 1000;
+                minimum-receive-interval {{ mclag.iccp.minimum_receive_interval }};
                 transmit-interval {
-                    minimum-interval 1000;
+                    minimum-interval {{ mclag.iccp.minimum_transmit_interval }};
                 }
             }
         }

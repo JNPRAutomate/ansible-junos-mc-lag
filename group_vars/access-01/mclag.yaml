@@ -1,21 +1,22 @@
 mclag_shared:
-    iccp:
-        vlan_id: 1
-        vlan_name: ICCP_VLAN
     mac: 00:11:22:33:33:01
-    mode: active-active
 
 mclag:
+  has_l3: false
   links:
+    icl:
+      links:
+        - "{{ topo[inventory_hostname].port3.name }}"
+        - "{{ topo[inventory_hostname].port4.name }}"
+    mcae:
       to_aggregation:
-      - "{{ topo[inventory_hostname].port3.name }}"
-      - "{{ topo[inventory_hostname].port4.name }}"
-      to_peer:
-      - "{{ topo[inventory_hostname].port1.name }}"
-      - "{{ topo[inventory_hostname].port2.name }}"
-      to_servers:
-      -   description: "{{ topo[inventory_hostname].port5.peer }}"
-          key: 2
-          links:
+        key: 1
+        links:
+          - "{{ topo[inventory_hostname].port1.name }}"
+          - "{{ topo[inventory_hostname].port2.name }}"
+      server1:
+        description: "{{ topo[inventory_hostname].port5.peer }}"
+        key: 2
+        vlans: ['100-199']
+        links:
           - "{{ topo[inventory_hostname].port5.name }}"
-          vlans: ['100-199']

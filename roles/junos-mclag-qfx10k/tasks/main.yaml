@@ -1,0 +1,5 @@
+---
+- name: Building MC-LAG configuration for QFX10k
+  template: >
+    src=main.conf.j2
+    dest={{ build_dir }}/main-qfx10k.conf.part

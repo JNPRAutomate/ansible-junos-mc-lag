@@ -1,8 +1,2 @@
 mclag:
-    chassis_id: 1
-    iccp:
-        local_ip: 1.1.1.2
-        peer_ip: 1.1.1.1
-    icl_interface: ae0
     nbr_ae: 4
-    status_control: standby

@@ -1,0 +1,4 @@
+mclag_shared:
+    mac: 00:11:22:33:33:00
+mclag:
+  has_l3: true
