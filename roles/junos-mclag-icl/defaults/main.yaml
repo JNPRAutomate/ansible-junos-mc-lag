@@ -5,8 +5,8 @@ mclag_id: "{{ id - ((id//2)*2) }}"
 
 mclag:
   mode: active-active
-  iccp_interface: ae0
-  icl_interface: ae1
+  iccp_interface: ae1
+  icl_interface: ae0
   chassis_id: "{{ mclag_id }}"
   status_control: "{{ 'active' if mclag_id == '0' else 'standby' }}"
   iccp:
