@@ -42,6 +42,10 @@ Generate configuration for all MC-AE interfaces.
 Default variables
 ^^^^^^^^^^^^^^^^^
 
+config template - junos-mclag-qfx5k (deprecated for now)
+---------------------------------------------------------
+
+
 
 config template - junos-system
 --------------------------------
