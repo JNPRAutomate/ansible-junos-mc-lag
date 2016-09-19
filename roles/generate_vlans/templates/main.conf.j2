@@ -4,7 +4,7 @@ vlans:
   V{{ i }}:
     id: {{ i }}
     name: V{{ i }}
-{% if mclag.has_l3 is defined %}
+{% if mclag.has_l3 is defined and mclag.has_l3 == true  %}
     ip: {{ ntwk_start | ipsubnet(ntwk_size, i) | ipaddr(id) | ipaddr('address') }}
     mask: {{ ntwk_size }}
     vip: {{ ntwk_start | ipsubnet(ntwk_size, i) | ipaddr(1) | ipaddr('address') }}
